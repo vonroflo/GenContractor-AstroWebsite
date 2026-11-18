@@ -1,0 +1,35 @@
+---
+import { Icon } from "astro-icon/components";
+import { site } from "@/site.config";
+import Section from "@/components/ui/Section.astro";
+import SectionHeading from "@/components/ui/SectionHeading.astro";
+import Button from "@/components/ui/Button.astro";
+
+interface Props {
+  heading: string;
+  intro?: string | undefined;
+  tone?: "white" | "surface";
+}
+
+const { heading, intro, tone = "white" } = Astro.props;
+---
+
+<Section tone={tone} aria-labelledby="areas-heading">
+  <div class="grid items-center gap-10 lg:grid-cols-2">
+    <div>
+      <SectionHeading id="areas-heading" heading={heading} intro={intro} />
+      <Button href="/service-area" variant="outline" class="mt-8">
+        See our service area
+        <Icon name="lucide:arrow-right" class="size-4" aria-hidden="true" />
+      </Button>
+    </div>
+    <ul class="flex flex-wrap gap-3">
+      {site.serviceAreas.map((city) => (
+        <li class="flex items-center gap-2 rounded-full border border-line bg-white px-4 py-2 font-heading font-semibold">
+          <Icon name="lucide:map-pin" class="size-4 text-primary" aria-hidden="true" />
+          {city}, {site.address.region}
+        </li>
+      ))}
+    </ul>
+  </div>
+</Section>

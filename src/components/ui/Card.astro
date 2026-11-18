@@ -1,0 +1,25 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"div"> {
+  /** Render as a link; the whole card becomes the click target. */
+  href?: string | undefined;
+}
+
+const { href, class: className, ...rest } = Astro.props;
+const classes = [
+  "group flex h-full flex-col rounded-xl border border-line bg-white p-6",
+  href && "transition hover:-translate-y-0.5 hover:border-primary hover:shadow-lg",
+  className,
+];
+---
+
+{href ? (
+  <a href={href} class:list={classes}>
+    <slot />
+  </a>
+) : (
+  <div class:list={classes} {...rest}>
+    <slot />
+  </div>
+)}

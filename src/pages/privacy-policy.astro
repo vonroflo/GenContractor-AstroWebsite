@@ -1,0 +1,34 @@
+---
+import { render } from "astro:content";
+import { getPage } from "@/lib/content";
+import BaseLayout from "@/components/layout/BaseLayout.astro";
+import PageHeader from "@/components/sections/PageHeader.astro";
+import Section from "@/components/ui/Section.astro";
+import Prose from "@/components/ui/Prose.astro";
+
+const page = await getPage("privacy-policy");
+const { data } = page;
+const { Content } = await render(page);
+const updated = data.updated?.toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+  timeZone: "UTC",
+});
+---
+
+<BaseLayout title={data.metaTitle} description={data.metaDescription}>
+  <PageHeader heading={data.heading} crumbs={[{ label: "Privacy Policy" }]}>
+    {updated && data.updated && (
+      <p class="mt-4 text-white/80">
+        Last updated <time datetime={data.updated.toISOString().slice(0, 10)}>{updated}</time>
+      </p>
+    )}
+  </PageHeader>
+
+  <Section>
+    <Prose>
+      <Content />
+    </Prose>
+  </Section>
+</BaseLayout>

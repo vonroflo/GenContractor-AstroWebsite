@@ -1,0 +1,82 @@
+# TODO: client copy. Placeholder homepage text; replace before launch.
+# Don't add claims the client hasn't confirmed (insured, years in business, review counts).
+# Tokens like {city} and {business} are filled from src/site.config.ts.
+home:
+  metaTitle: "General Contractor in {city}, {region} | {business}"
+  metaDescription: "Licensed general contractor in {city} for concrete, stucco, drywall, waterproofing, remodels, ADUs, additions, and repairs. Request your free estimate today."
+  hero:
+    eyebrow: "Licensed General Contractor in {city}"
+    heading: "Build, remodel, and repair with a contractor who answers the phone."
+    subheading: "From driveways and stucco to ADUs and room additions, {business} handles the work, the permits, and the details, so you get a finished project without the runaround."
+    image: ../assets/site/home-hero.jpg
+    imageAlt: "Placeholder: completed residential construction project"
+    points:
+      - "Free written estimates"
+      - "CSLB license #{license}"
+      - "Permits handled for you"
+  trust:
+    - icon: badge-check
+      label: "CSLB Licensed #{license}"
+    - icon: file-text
+      label: "Free written estimates"
+    - icon: user-round-check
+      label: "One point of contact"
+    - icon: map-pin
+      label: "Serving {city} and nearby"
+  services:
+    heading: "What can we build for you?"
+    intro: "One licensed contractor for the projects homeowners in {city} need most, from a single repair to a new ADU."
+  whyUs:
+    heading: "Why do homeowners in {city} choose us?"
+    intro: "Hiring a contractor is a big decision. Here's what you can expect when you work with {business}."
+    items:
+      - icon: shield-check
+        title: "Licensed and accountable"
+        text: "We hold an active California contractor's license, which you can verify on the CSLB website before you hire."
+      - icon: file-text
+        title: "Clear, written estimates"
+        text: "You get an itemized estimate before work starts, and any change is written and priced before we do it."
+      - icon: messages-square
+        title: "Straight communication"
+        text: "One point of contact who returns calls, keeps you updated, and tells you what's happening and why."
+      - icon: sparkles
+        title: "Clean, respectful job sites"
+        text: "We protect your home, contain dust, and clean up at the end of every working day."
+  process:
+    heading: "How does working with us work?"
+    steps:
+      - step: "Request an estimate"
+        detail: "Call or send the form. We'll ask a few questions and schedule a visit."
+      - step: "Site visit"
+        detail: "We look at the project, take measurements, and talk through options and budget."
+      - step: "Written proposal"
+        detail: "You get a clear, itemized estimate and schedule, with no pressure to sign."
+      - step: "Build and walkthrough"
+        detail: "We do the work, handle inspections, and walk the finished job with you."
+  gallery:
+    heading: "Recent projects"
+    intro: "A look at recent work around {city}."
+  testimonials:
+    heading: "What do our customers say?"
+    intro: "Reviews from homeowners we've worked with."
+  serviceAreas:
+    heading: "Where do we work?"
+    intro: "We're based in {city} and serve homeowners throughout the surrounding area."
+  faq:
+    heading: "Frequently asked questions"
+    items:
+      - q: "Are you a licensed contractor?"
+        a: "Yes. We hold California contractor's license #{license}, issued by the Contractors State License Board. You can verify any contractor's license on the CSLB website."
+      - q: "Do you offer free estimates?"
+        a: "Yes. We'll visit, look at the project, and give you a written estimate at no cost and with no obligation."
+      - q: "What areas do you serve?"
+        a: "We serve {serviceAreas}, {region}, and nearby communities. If you're not sure whether you're in our area, give us a call."
+      - q: "Do you handle permits?"
+        a: "Yes. When a project needs a permit, we prepare the submittal, work with the city through plan review, and schedule all inspections."
+      - q: "How soon can you start?"
+        a: "It depends on the project and our current schedule. Permitted projects also depend on city review times. We'll give you a realistic start date with your estimate."
+      - q: "How do payments work?"
+        a: "Payments follow a written schedule tied to completed work. California limits the down payment on home improvement contracts, and our contracts follow those rules."
+  cta:
+    heading: "Ready to get started?"
+    text: "Tell us about your project and we'll schedule a free estimate. Prefer to talk? Call {phone}."

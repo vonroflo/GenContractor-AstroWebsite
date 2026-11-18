@@ -24,3 +24,15 @@ Choices made where the PRD was ambiguous. Simplest option that meets the accepta
 - **Projects collection deferred.** It's optional in the PRD and nothing consumes it yet; it can be added with the Gallery section in Phase 3 if needed.
 - **The header services dropdown and footer read the services collection in `BaseLayout`**, so pages don't need to pass navigation data.
 - **FAQ questions aren't headings.** `<summary>` has a button role, which removes heading semantics for assistive tech, so questions are plain text inside it.
+
+## Phase 3
+
+- **Homepage copy lives in `src/content/home.yaml`** (a single-entry `home` data collection with a strict schema), and About, Service Area, Contact, and Privacy Policy copy lives in `src/content/pages/*.md`. That keeps every page clone-able as a content swap, and validated like the services.
+- **More content tokens:** `{email}`, `{legalName}`, `{license}`, and `{serviceAreas}` (comma-separated list), all from `site.config.ts`.
+- **Meta tags avoid `{business}` where they can.** Title and description limits are checked after tokens are filled, so a long business or city name can fail the build. Inner pages now leave the business name out of meta descriptions to keep headroom. The homepage title still includes it on purpose.
+- **No "insured" claim anywhere.** Trust bar, why-us, and the service sidebar only claim what's verifiable from config (the CSLB license) or describe process. Add insurance, years in business, or review counts only once the client confirms them.
+- **Homepage gallery uses the first gallery image of each service**, captioned with a link to that service. A `projects` collection can replace this later without changing the `Gallery` section.
+- **Contact page map is a lazy-loaded Google Maps `<iframe>`** of the city/ZIP (no API key, no JS) plus an "Open in Google Maps" link. The quote form slot shows a call/email fallback until Phase 4.
+- **Privacy policy is a starting template** covering form data, UTM/gclid capture, Turnstile, the CRM, SMS consent (STOP/HELP), and California privacy rights. It's flagged for attorney review in its frontmatter.
+- **Service pages now reuse the `ProcessSteps`, `Gallery`, and `FAQ` sections**, so they stay consistent with the homepage.
+- **`formatCityLine()` builds "City, CA 90000" as one string.** Prettier wraps adjacent `{expr}` lines, and Astro drops the whitespace between them.

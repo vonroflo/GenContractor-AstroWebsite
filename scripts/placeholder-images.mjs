@@ -55,3 +55,17 @@ for (const [slug, label] of services) {
 }
 
 console.log(`Wrote ${services.length * variants.length} images to ${outDir.pathname}`);
+
+// Site-wide images (homepage hero, about page).
+const siteDir = new URL("../src/assets/site/", import.meta.url);
+await mkdir(siteDir, { recursive: true });
+const siteImages = [
+  ["home-hero", "", variants[0], ""],
+  ["about", "Our Team", { ...variants[1], width: 1200, height: 900 }],
+];
+for (const [name, label, v, note = "Placeholder image — replace with a real photo"] of siteImages) {
+  await sharp(Buffer.from(svg(v, label, note)))
+    .jpeg({ quality: 70, mozjpeg: true })
+    .toFile(new URL(`${name}.jpg`, siteDir).pathname);
+}
+console.log(`Wrote ${siteImages.length} images to ${siteDir.pathname}`);

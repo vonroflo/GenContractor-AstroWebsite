@@ -1,0 +1,28 @@
+---
+import Section from "@/components/ui/Section.astro";
+import SectionHeading from "@/components/ui/SectionHeading.astro";
+
+interface Props {
+  heading: string;
+  intro?: string | undefined;
+  steps: { step: string; detail: string }[];
+  tone?: "white" | "surface";
+}
+
+const { heading, intro, steps, tone = "white" } = Astro.props;
+---
+
+<Section tone={tone} aria-labelledby="process-heading">
+  <SectionHeading id="process-heading" heading={heading} intro={intro} />
+  <ol class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+    {steps.map((p, i) => (
+      <li class="rounded-xl border border-line bg-white p-6">
+        <span class="flex size-10 items-center justify-center rounded-full bg-accent font-heading font-bold text-ink">
+          {i + 1}
+        </span>
+        <h3 class="mt-4 text-lg font-semibold">{p.step}</h3>
+        <p class="mt-2 text-muted">{p.detail}</p>
+      </li>
+    ))}
+  </ol>
+</Section>

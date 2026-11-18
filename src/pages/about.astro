@@ -1,0 +1,71 @@
+---
+import { render } from "astro:content";
+import { Picture } from "astro:assets";
+import { Icon } from "astro-icon/components";
+import { site } from "@/site.config";
+import { getPage } from "@/lib/content";
+import BaseLayout from "@/components/layout/BaseLayout.astro";
+import PageHeader from "@/components/sections/PageHeader.astro";
+import CTABanner from "@/components/sections/CTABanner.astro";
+import Section from "@/components/ui/Section.astro";
+import Prose from "@/components/ui/Prose.astro";
+
+const page = await getPage("about");
+const { data } = page;
+const { Content } = await render(page);
+---
+
+<BaseLayout title={data.metaTitle} description={data.metaDescription}>
+  <PageHeader heading={data.heading} intro={data.intro} crumbs={[{ label: "About" }]} />
+
+  <Section>
+    <div class="grid grid-cols-[minmax(0,1fr)] gap-12 lg:grid-cols-[minmax(0,1fr)_380px]">
+      <Prose>
+        <Content />
+      </Prose>
+
+      <aside class="space-y-6 lg:sticky lg:top-28 lg:self-start">
+        {data.image && data.imageAlt && (
+          <Picture
+            src={data.image}
+            alt={data.imageAlt}
+            formats={["avif", "webp"]}
+            widths={[400, 760]}
+            sizes="(min-width: 1024px) 380px, 100vw"
+            class="aspect-[4/3] w-full rounded-xl object-cover"
+          />
+        )}
+        <div class="rounded-xl border border-line bg-surface p-6">
+          <h2 class="flex items-center gap-2 text-xl font-bold">
+            <Icon name="lucide:badge-check" class="size-6 text-primary" aria-hidden="true" />
+            License
+          </h2>
+          <dl class="mt-4 space-y-3 text-sm">
+            <div>
+              <dt class="text-muted">Licensing board</dt>
+              <dd class="font-semibold">{site.license.board}</dd>
+            </div>
+            <div>
+              <dt class="text-muted">License number</dt>
+              <dd class="font-semibold">#{site.license.number}</dd>
+            </div>
+            <div>
+              <dt class="text-muted">Business name</dt>
+              <dd class="font-semibold">{site.legalName}</dd>
+            </div>
+          </dl>
+          <a
+            href={site.license.verifyUrl}
+            rel="noopener"
+            class="mt-5 inline-flex items-center gap-1 font-heading text-sm font-semibold text-primary underline underline-offset-4"
+          >
+            Verify on the CSLB website
+            <Icon name="lucide:arrow-right" class="size-4" aria-hidden="true" />
+          </a>
+        </div>
+      </aside>
+    </div>
+  </Section>
+
+  <CTABanner />
+</BaseLayout>

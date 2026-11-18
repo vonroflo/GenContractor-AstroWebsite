@@ -2,6 +2,7 @@
 import { Icon } from "astro-icon/components";
 import { site, nav } from "@/site.config";
 import Container from "@/components/ui/Container.astro";
+import { formatCityLine, formatHours } from "@/lib/format";
 import type { NavService } from "./Header.astro";
 
 interface Props {
@@ -10,28 +11,6 @@ interface Props {
 
 const { services = [] } = Astro.props;
 const year = new Date().getFullYear();
-
-const dayNames: Record<string, string> = {
-  Mo: "Mon",
-  Tu: "Tue",
-  We: "Wed",
-  Th: "Thu",
-  Fr: "Fri",
-  Sa: "Sat",
-  Su: "Sun",
-};
-const formatDays = (days: string) =>
-  days
-    .split("-")
-    .map((d) => dayNames[d] ?? d)
-    .join("–");
-const formatTime = (t: string) => {
-  const [h = 0, m = 0] = t.split(":").map(Number);
-  const suffix = h >= 12 ? "pm" : "am";
-  const hour = h % 12 || 12;
-  return m ? `${hour}:${String(m).padStart(2, "0")}${suffix}` : `${hour}${suffix}`;
-};
-
 const socials = Object.entries(site.social).filter(([, url]) => url);
 ---
 
@@ -117,13 +96,14 @@ const socials = Object.entries(site.social).filter(([, url]) => url);
         </li>
         <li class="flex items-center gap-2">
           <Icon name="lucide:map-pin" class="size-4" aria-hidden="true" />
-          {site.address.locality}, {site.address.region}
-          {site.address.postalCode}
+          <a href="/service-area" class="hover:text-white hover:underline">
+            {formatCityLine(site.address)}
+          </a>
         </li>
         {site.hours.map((h) => (
           <li class="flex items-center gap-2">
             <Icon name="lucide:clock" class="size-4" aria-hidden="true" />
-            {formatDays(h.days)} {formatTime(h.open)}–{formatTime(h.close)}
+            {formatHours(h)}
           </li>
         ))}
       </ul>

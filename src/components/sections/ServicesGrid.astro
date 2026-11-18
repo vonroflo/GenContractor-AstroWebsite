@@ -1,0 +1,40 @@
+---
+import { Icon } from "astro-icon/components";
+import { serviceHref, type Service } from "@/lib/services";
+import Section from "@/components/ui/Section.astro";
+import SectionHeading from "@/components/ui/SectionHeading.astro";
+import Card from "@/components/ui/Card.astro";
+
+interface Props {
+  heading: string;
+  intro?: string | undefined;
+  services: Service[];
+}
+
+const { heading, intro, services } = Astro.props;
+---
+
+<Section id="services" aria-labelledby="services-heading">
+  <SectionHeading id="services-heading" heading={heading} intro={intro} />
+  <ul class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+    {services.map((s) => (
+      <li>
+        <Card href={serviceHref(s)}>
+          <span class="flex size-12 items-center justify-center rounded-lg bg-primary-light text-primary">
+            <Icon name={`lucide:${s.data.icon}`} class="size-6" aria-hidden="true" />
+          </span>
+          <h3 class="mt-5 text-lg font-semibold group-hover:text-primary">{s.data.title}</h3>
+          <p class="mt-2 flex-1 text-muted">{s.data.summary}</p>
+          <span class="mt-4 flex items-center gap-1 font-heading text-sm font-semibold text-primary">
+            Learn more<span class="sr-only"> about {s.data.title.toLowerCase()}</span>
+            <Icon
+              name="lucide:arrow-right"
+              class="size-4 transition-transform group-hover:translate-x-1"
+              aria-hidden="true"
+            />
+          </span>
+        </Card>
+      </li>
+    ))}
+  </ul>
+</Section>

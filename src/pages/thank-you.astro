@@ -1,0 +1,59 @@
+---
+import { Icon } from "astro-icon/components";
+import { site } from "@/site.config";
+import { getServices, serviceHref } from "@/lib/services";
+import BaseLayout from "@/components/layout/BaseLayout.astro";
+import Section from "@/components/ui/Section.astro";
+import Button from "@/components/ui/Button.astro";
+
+const services = await getServices();
+---
+
+<BaseLayout
+  title={`Thank You | ${site.name}`}
+  description={`Thanks for contacting ${site.name}. We received your estimate request and will be in touch soon.`}
+  noindex
+>
+  <Section>
+    <div class="mx-auto max-w-2xl text-center">
+      <span class="mx-auto flex size-16 items-center justify-center rounded-full bg-primary-light text-primary">
+        <Icon name="lucide:circle-check-big" class="size-9" aria-hidden="true" />
+      </span>
+      <h1 class="mt-6 text-4xl font-extrabold sm:text-5xl">Thanks, we got your request.</h1>
+      <p class="mt-5 text-lg text-muted">
+        We'll review your project details and get back to you soon to schedule your free estimate.
+        If it's urgent, call us now.
+      </p>
+      <div class="mt-8 flex flex-wrap justify-center gap-3">
+        <Button href={`tel:${site.phoneE164}`} variant="primary" size="lg">
+          <Icon name="lucide:phone" class="size-5" aria-hidden="true" />
+          {site.phone}
+        </Button>
+        <Button href="/" variant="outline" size="lg">
+          Back to home
+        </Button>
+      </div>
+    </div>
+
+    <div class="mx-auto mt-16 max-w-3xl">
+      <h2 class="text-center text-xl font-bold">While you wait, explore our services</h2>
+      <ul class="mt-6 grid gap-3 sm:grid-cols-2">
+        {services.map((s) => (
+          <li>
+            <a
+              href={serviceHref(s)}
+              class="flex items-center gap-3 rounded-lg border border-line p-4 font-heading font-semibold hover:border-primary hover:text-primary"
+            >
+              <Icon
+                name={`lucide:${s.data.icon}`}
+                class="size-5 shrink-0 text-primary"
+                aria-hidden="true"
+              />
+              {s.data.title}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </Section>
+</BaseLayout>

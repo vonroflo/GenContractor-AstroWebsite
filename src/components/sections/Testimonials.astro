@@ -1,0 +1,49 @@
+---
+import { Icon } from "astro-icon/components";
+import type { CollectionEntry } from "astro:content";
+import Section from "@/components/ui/Section.astro";
+import SectionHeading from "@/components/ui/SectionHeading.astro";
+
+interface Props {
+  heading: string;
+  intro?: string | undefined;
+  testimonials: CollectionEntry<"testimonials">[];
+  tone?: "white" | "surface";
+}
+
+const { heading, intro, testimonials, tone = "white" } = Astro.props;
+---
+
+{testimonials.length > 0 && (
+  <Section tone={tone} aria-labelledby="testimonials-heading">
+    <SectionHeading id="testimonials-heading" heading={heading} intro={intro} />
+    <ul class="mt-12 grid gap-6 lg:grid-cols-3">
+      {testimonials.map(({ data }) => (
+        <li>
+          <figure class="flex h-full flex-col rounded-xl border border-line bg-white p-6">
+            <p
+              class="flex gap-0.5 text-accent-dark"
+              role="img"
+              aria-label={`Rated ${data.rating} out of 5`}
+            >
+              {Array.from({ length: 5 }, (_, i) => (
+                <Icon
+                  name="lucide:star"
+                  class:list={["size-5", i < data.rating ? "fill-current" : "text-line"]}
+                  aria-hidden="true"
+                />
+              ))}
+            </p>
+            <blockquote class="mt-4 flex-1 text-lg">
+              <p>“{data.quote}”</p>
+            </blockquote>
+            <figcaption class="mt-6 border-t border-line pt-4 text-sm">
+              <span class="block font-heading font-semibold">{data.name}</span>
+              <span class="text-muted">{data.location}</span>
+            </figcaption>
+          </figure>
+        </li>
+      ))}
+    </ul>
+  </Section>
+)}

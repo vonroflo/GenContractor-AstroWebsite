@@ -1,0 +1,50 @@
+---
+import { Icon } from "astro-icon/components";
+import Container from "@/components/ui/Container.astro";
+
+interface Props {
+  heading: string;
+  intro?: string | undefined;
+  /** Breadcrumb trail after Home; the last item is the current page. */
+  crumbs?: { label: string; href?: string }[];
+}
+
+const { heading, intro, crumbs = [] } = Astro.props;
+---
+
+<section class="bg-primary text-white">
+  <Container class="py-12 lg:py-16">
+    {crumbs.length > 0 && (
+      <nav aria-label="Breadcrumb" class="text-sm text-white/80">
+        <ol class="flex flex-wrap items-center gap-1">
+          <li>
+            <a href="/" class="hover:text-white hover:underline">
+              Home
+            </a>
+          </li>
+          {crumbs.map((c, i) => (
+            <>
+              <li aria-hidden="true">
+                <Icon name="lucide:chevron-right" class="size-4" />
+              </li>
+              <li>
+                {c.href && i < crumbs.length - 1 ? (
+                  <a href={c.href} class="hover:text-white hover:underline">
+                    {c.label}
+                  </a>
+                ) : (
+                  <span aria-current="page" class="text-white">
+                    {c.label}
+                  </span>
+                )}
+              </li>
+            </>
+          ))}
+        </ol>
+      </nav>
+    )}
+    <h1 class="mt-4 max-w-3xl text-4xl font-extrabold text-white sm:text-5xl">{heading}</h1>
+    {intro && <p class="mt-4 max-w-2xl text-lg text-white/85">{intro}</p>}
+    <slot />
+  </Container>
+</section>

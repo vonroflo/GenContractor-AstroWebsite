@@ -1,0 +1,66 @@
+---
+import { render } from "astro:content";
+import { Icon } from "astro-icon/components";
+import { site } from "@/site.config";
+import { getPage } from "@/lib/content";
+import { getServices, serviceHref } from "@/lib/services";
+import BaseLayout from "@/components/layout/BaseLayout.astro";
+import PageHeader from "@/components/sections/PageHeader.astro";
+import CTABanner from "@/components/sections/CTABanner.astro";
+import Section from "@/components/ui/Section.astro";
+import Prose from "@/components/ui/Prose.astro";
+
+const page = await getPage("service-area");
+const { data } = page;
+const { Content } = await render(page);
+const services = await getServices();
+// City landing pages (/service-area/[city]) are optional and arrive in Phase 6.
+---
+
+<BaseLayout title={data.metaTitle} description={data.metaDescription}>
+  <PageHeader heading={data.heading} intro={data.intro} crumbs={[{ label: "Service Area" }]} />
+
+  <Section>
+    <div class="grid grid-cols-[minmax(0,1fr)] gap-12 lg:grid-cols-2">
+      <Prose>
+        <Content />
+      </Prose>
+      <div>
+        <h2 class="text-2xl font-bold">Cities we serve</h2>
+        <ul class="mt-6 grid gap-3 sm:grid-cols-2">
+          {site.serviceAreas.map((city) => (
+            <li class="flex items-center gap-3 rounded-xl border border-line bg-surface p-4 font-heading font-semibold">
+              <Icon name="lucide:map-pin" class="size-5 shrink-0 text-primary" aria-hidden="true" />
+              {city}, {site.address.region}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </Section>
+
+  <Section tone="surface" aria-labelledby="area-services-heading">
+    <h2 id="area-services-heading" class="text-3xl font-bold">
+      Services available throughout our area
+    </h2>
+    <ul class="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      {services.map((s) => (
+        <li>
+          <a
+            href={serviceHref(s)}
+            class="flex h-full items-center gap-3 rounded-lg border border-line bg-white p-4 font-heading font-semibold hover:border-primary hover:text-primary"
+          >
+            <Icon
+              name={`lucide:${s.data.icon}`}
+              class="size-6 shrink-0 text-primary"
+              aria-hidden="true"
+            />
+            {s.data.title}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </Section>
+
+  <CTABanner />
+</BaseLayout>
