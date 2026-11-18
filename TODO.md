@@ -22,3 +22,6 @@ Also set: `geo.lat` / `geo.lng`, `hours`, `social` URLs, `theme` colors.
 
 - Anything marked `TODO: client copy` needs real copy from the client.
 - Replace `public/favicon.svg` with the client's mark.
+- Service pages (`src/content/services/*.md`): all copy is placeholder (`# TODO: client copy` in each frontmatter). Review for accuracy against what the client actually offers.
+- `src/assets/services/*.jpg` are generated placeholders. Replace with real, owned project photos (keep the filenames or update the frontmatter paths) and update `heroImageAlt` / gallery `alt` text.
+- `src/content/testimonials.json`: replace the three placeholders (`{{REVIEWER_NAME_1..3}}`) with real reviews and set `placeholder: false`.

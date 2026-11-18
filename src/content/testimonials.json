@@ -1,0 +1,32 @@
+[
+  {
+    "id": "placeholder-1",
+    "name": "{{REVIEWER_NAME_1}}",
+    "location": "{city}, {region}",
+    "service": "concrete-contractor",
+    "rating": 5,
+    "quote": "TODO: client copy. Paste a real customer review here, with the customer's permission.",
+    "date": "2026-01-01",
+    "placeholder": true
+  },
+  {
+    "id": "placeholder-2",
+    "name": "{{REVIEWER_NAME_2}}",
+    "location": "{city}, {region}",
+    "service": "home-remodeling",
+    "rating": 5,
+    "quote": "TODO: client copy. Paste a real customer review here, with the customer's permission.",
+    "date": "2026-01-01",
+    "placeholder": true
+  },
+  {
+    "id": "placeholder-3",
+    "name": "{{REVIEWER_NAME_3}}",
+    "location": "{city}, {region}",
+    "service": "adu-construction",
+    "rating": 5,
+    "quote": "TODO: client copy. Paste a real customer review here, with the customer's permission.",
+    "date": "2026-01-01",
+    "placeholder": true
+  }
+]

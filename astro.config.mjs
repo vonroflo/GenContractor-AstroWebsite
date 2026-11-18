@@ -4,6 +4,8 @@ import vercel from "@astrojs/vercel";
 import sitemap from "@astrojs/sitemap";
 import icon from "astro-icon";
 import tailwindcss from "@tailwindcss/vite";
+import { unified } from "@astrojs/markdown-remark";
+import { remarkSiteTokens } from "./src/lib/tokens.ts";
 
 export default defineConfig({
   // PUBLIC_SITE_URL (set in Vercel env) means new clients need no code edits.
@@ -17,6 +19,9 @@ export default defineConfig({
       filter: (page) => !page.includes("/thank-you") && !page.includes("/api/"),
     }),
   ],
+  markdown: {
+    processor: unified({ remarkPlugins: [remarkSiteTokens] }),
+  },
   vite: {
     plugins: [tailwindcss()],
   },

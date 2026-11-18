@@ -2,7 +2,13 @@
 import { Icon } from "astro-icon/components";
 import { site, nav } from "@/site.config";
 import Container from "@/components/ui/Container.astro";
+import type { NavService } from "./Header.astro";
 
+interface Props {
+  services?: NavService[] | undefined;
+}
+
+const { services = [] } = Astro.props;
 const year = new Date().getFullYear();
 
 const dayNames: Record<string, string> = {
@@ -30,7 +36,7 @@ const socials = Object.entries(site.social).filter(([, url]) => url);
 ---
 
 <footer class="bg-primary-dark pb-24 text-white/85 lg:pb-0">
-  <Container class="grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
+  <Container class="grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-5">
     <div class="sm:col-span-2 lg:col-span-1">
       <p class="font-heading text-lg font-extrabold text-white">{site.name}</p>
       <p class="mt-2 text-sm">{site.tagline}</p>
@@ -44,6 +50,21 @@ const socials = Object.entries(site.social).filter(([, url]) => url);
         </a>
       </p>
     </div>
+
+    {services.length > 0 && (
+      <div>
+        <h2 class="font-heading text-sm font-bold tracking-wider text-white uppercase">Services</h2>
+        <ul class="mt-4 space-y-2 text-sm">
+          {services.map((s) => (
+            <li>
+              <a href={s.href} class="hover:text-white hover:underline">
+                {s.title}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
 
     <div>
       <h2 class="font-heading text-sm font-bold tracking-wider text-white uppercase">Company</h2>
