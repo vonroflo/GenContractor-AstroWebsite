@@ -1,0 +1,177 @@
+---
+import { Icon } from "astro-icon/components";
+import { site, nav } from "@/site.config";
+import Container from "@/components/ui/Container.astro";
+import Button from "@/components/ui/Button.astro";
+
+export interface NavService {
+  title: string;
+  href: string;
+}
+
+interface Props {
+  /** Populated from the services collection once it exists (Phase 2). */
+  services?: NavService[] | undefined;
+}
+
+const { services = [] } = Astro.props;
+const currentPath = Astro.url.pathname;
+const isCurrent = (href: string) => currentPath === href || currentPath.startsWith(`${href}/`);
+const telHref = `tel:${site.phoneE164}`;
+---
+
+<header class="sticky top-0 z-40 border-b border-line/80 bg-white/85 backdrop-blur-md supports-[backdrop-filter]:bg-white/70">
+  <a
+    href="#main"
+    class="sr-only z-50 rounded-md bg-primary px-4 py-2 text-white focus:not-sr-only focus:absolute focus:top-2 focus:left-2"
+  >
+    Skip to content
+  </a>
+
+  <Container class="flex h-16 items-center justify-between gap-4 lg:h-20">
+    <a href="/" class="flex items-center gap-2 font-heading text-lg font-extrabold text-primary">
+      <Icon name="lucide:hard-hat" class="size-7 text-accent-dark" aria-hidden="true" />
+      <span>{site.name}</span>
+    </a>
+
+    <nav aria-label="Main" class="hidden lg:block">
+      <ul class="flex items-center gap-1 font-heading text-sm font-semibold">
+        <li class="group relative">
+          <a
+            href="/#services"
+            class="flex items-center gap-1 rounded-md px-3 py-2 text-ink hover:text-primary"
+            aria-haspopup={services.length > 0 ? "true" : undefined}
+          >
+            Services
+            {services.length > 0 && (
+              <Icon name="lucide:chevron-down" class="size-4" aria-hidden="true" />
+            )}
+          </a>
+          {services.length > 0 && (
+            <ul class="invisible absolute top-full left-0 w-64 translate-y-1 rounded-lg border border-line bg-white p-2 opacity-0 shadow-lg transition group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
+              {services.map((s) => (
+                <li>
+                  <a
+                    href={s.href}
+                    class="block rounded-md px-3 py-2 text-ink hover:bg-primary-light hover:text-primary"
+                    aria-current={isCurrent(s.href) ? "page" : undefined}
+                  >
+                    {s.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
+        </li>
+        {nav.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class="rounded-md px-3 py-2 text-ink hover:text-primary aria-[current=page]:text-primary aria-[current=page]:underline aria-[current=page]:underline-offset-8"
+              aria-current={isCurrent(item.href) ? "page" : undefined}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="hidden items-center gap-2 lg:flex">
+      <Button href={telHref} variant="ghost" size="sm">
+        <Icon name="lucide:phone" class="size-4" aria-hidden="true" />
+        <span>
+          Call Now <span class="sr-only">{site.phone}</span>
+        </span>
+      </Button>
+      <Button href="/contact" size="sm">
+        Free Estimate
+      </Button>
+    </div>
+
+    <button
+      type="button"
+      class="inline-flex size-11 items-center justify-center rounded-md text-primary lg:hidden"
+      aria-controls="mobile-menu"
+      aria-expanded="false"
+      data-menu-toggle
+    >
+      <span class="sr-only">Open menu</span>
+      <Icon name="lucide:menu" class="size-6" aria-hidden="true" data-icon-open />
+      <Icon name="lucide:x" class="hidden size-6" aria-hidden="true" data-icon-close />
+    </button>
+  </Container>
+
+  <div id="mobile-menu" class="hidden border-t border-line bg-white lg:hidden" data-menu>
+    <Container class="max-h-[calc(100dvh-4rem)] overflow-y-auto py-4">
+      <nav aria-label="Mobile">
+        <ul class="flex flex-col font-heading font-semibold">
+          {services.length > 0 ? (
+            <li>
+              <p class="px-3 pt-2 pb-1 text-xs tracking-wider text-muted uppercase">Services</p>
+              <ul>
+                {services.map((s) => (
+                  <li>
+                    <a href={s.href} class="block rounded-md px-3 py-3 hover:bg-primary-light">
+                      {s.title}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </li>
+          ) : (
+            <li>
+              <a href="/#services" class="block rounded-md px-3 py-3 hover:bg-primary-light">
+                Services
+              </a>
+            </li>
+          )}
+          {nav.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                class="block rounded-md px-3 py-3 hover:bg-primary-light"
+                aria-current={isCurrent(item.href) ? "page" : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+      <div class="mt-4 grid gap-2">
+        <Button href={telHref} variant="primary">
+          <Icon name="lucide:phone" class="size-5" aria-hidden="true" />
+          Call {site.phone}
+        </Button>
+        <Button href="/contact">Free Estimate</Button>
+      </div>
+    </Container>
+  </div>
+</header>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>("[data-menu-toggle]");
+  const menu = document.querySelector<HTMLElement>("[data-menu]");
+
+  if (toggle && menu) {
+    const label = toggle.querySelector(".sr-only");
+    const setOpen = (open: boolean) => {
+      toggle.setAttribute("aria-expanded", String(open));
+      menu.classList.toggle("hidden", !open);
+      toggle.querySelector("[data-icon-open]")?.classList.toggle("hidden", open);
+      toggle.querySelector("[data-icon-close]")?.classList.toggle("hidden", !open);
+      if (label) label.textContent = open ? "Close menu" : "Open menu";
+    };
+
+    toggle.addEventListener("click", () =>
+      setOpen(toggle.getAttribute("aria-expanded") !== "true"),
+    );
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && toggle.getAttribute("aria-expanded") === "true") {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+  }
+</script>

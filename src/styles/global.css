@@ -1,0 +1,58 @@
+@import "tailwindcss";
+@import "@fontsource-variable/plus-jakarta-sans";
+@import "@fontsource-variable/dm-sans";
+
+/*
+ * Brand colors come from site.config.ts: BaseLayout writes --brand-primary and
+ * --brand-accent onto :root, and these tokens derive every shade from them.
+ * Re-skinning a client is a config change only.
+ */
+@theme inline {
+  --color-primary: var(--brand-primary, #1f3a5f);
+  --color-primary-dark: color-mix(in oklab, var(--color-primary) 80%, black);
+  --color-primary-light: color-mix(in oklab, var(--color-primary) 10%, white);
+  --color-accent: var(--brand-accent, #e07a1f);
+  --color-accent-dark: color-mix(in oklab, var(--color-accent) 85%, black);
+  --color-accent-light: color-mix(in oklab, var(--color-accent) 12%, white);
+}
+
+@theme {
+  --color-ink: #0f172a;
+  --color-muted: #475569;
+  --color-surface: #f8fafc;
+  --color-line: #e2e8f0;
+
+  --font-heading: "Plus Jakarta Sans Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "DM Sans Variable", ui-sans-serif, system-ui, sans-serif;
+
+  --container-site: 1200px;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    @apply bg-white font-sans text-ink antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-heading tracking-tight text-ink;
+    text-wrap: balance;
+  }
+
+  :focus-visible {
+    @apply outline-3 outline-offset-2 outline-accent;
+  }
+}

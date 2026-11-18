@@ -1,0 +1,43 @@
+---
+import "@/styles/global.css";
+import { site } from "@/site.config";
+import Header, { type NavService } from "@/components/layout/Header.astro";
+import Footer from "@/components/layout/Footer.astro";
+import MobileCallBar from "@/components/layout/MobileCallBar.astro";
+
+interface Props {
+  title: string;
+  description: string;
+  noindex?: boolean;
+  services?: NavService[];
+}
+
+// Full SEO/OG/JSON-LD handling arrives with SEO.astro in Phase 5.
+const { title, description, noindex = false, services } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const themeVars = `:root{--brand-primary:${site.theme.primary};--brand-accent:${site.theme.accent}}`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <meta name="theme-color" content={site.theme.primary} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <style set:html={themeVars}></style>
+    <slot name="head" />
+  </head>
+  <body class="flex min-h-dvh flex-col">
+    <Header services={services} />
+    <main id="main" class="flex-1">
+      <slot />
+    </main>
+    <Footer />
+    <MobileCallBar />
+  </body>
+</html>

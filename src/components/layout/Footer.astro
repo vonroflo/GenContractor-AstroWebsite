@@ -1,0 +1,129 @@
+---
+import { Icon } from "astro-icon/components";
+import { site, nav } from "@/site.config";
+import Container from "@/components/ui/Container.astro";
+
+const year = new Date().getFullYear();
+
+const dayNames: Record<string, string> = {
+  Mo: "Mon",
+  Tu: "Tue",
+  We: "Wed",
+  Th: "Thu",
+  Fr: "Fri",
+  Sa: "Sat",
+  Su: "Sun",
+};
+const formatDays = (days: string) =>
+  days
+    .split("-")
+    .map((d) => dayNames[d] ?? d)
+    .join("–");
+const formatTime = (t: string) => {
+  const [h = 0, m = 0] = t.split(":").map(Number);
+  const suffix = h >= 12 ? "pm" : "am";
+  const hour = h % 12 || 12;
+  return m ? `${hour}:${String(m).padStart(2, "0")}${suffix}` : `${hour}${suffix}`;
+};
+
+const socials = Object.entries(site.social).filter(([, url]) => url);
+---
+
+<footer class="bg-primary-dark pb-24 text-white/85 lg:pb-0">
+  <Container class="grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
+    <div class="sm:col-span-2 lg:col-span-1">
+      <p class="font-heading text-lg font-extrabold text-white">{site.name}</p>
+      <p class="mt-2 text-sm">{site.tagline}</p>
+      <p class="mt-4 text-sm">
+        <a
+          href={site.license.verifyUrl}
+          class="underline underline-offset-4 hover:text-white"
+          rel="noopener"
+        >
+          CSLB License #{site.license.number}
+        </a>
+      </p>
+    </div>
+
+    <div>
+      <h2 class="font-heading text-sm font-bold tracking-wider text-white uppercase">Company</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        {nav.map((item) => (
+          <li>
+            <a href={item.href} class="hover:text-white hover:underline">
+              {item.label}
+            </a>
+          </li>
+        ))}
+        <li>
+          <a href="/privacy-policy" class="hover:text-white hover:underline">
+            Privacy Policy
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="font-heading text-sm font-bold tracking-wider text-white uppercase">
+        Service Area
+      </h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        {site.serviceAreas.map((city) => (
+          <li>
+            {city}, {site.address.region}
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="font-heading text-sm font-bold tracking-wider text-white uppercase">Contact</h2>
+      <ul class="mt-4 space-y-3 text-sm">
+        <li>
+          <a href={`tel:${site.phoneE164}`} class="flex items-center gap-2 hover:text-white">
+            <Icon name="lucide:phone" class="size-4" aria-hidden="true" />
+            {site.phone}
+          </a>
+        </li>
+        <li>
+          <a
+            href={`mailto:${site.email}`}
+            class="flex items-center gap-2 break-all hover:text-white"
+          >
+            <Icon name="lucide:mail" class="size-4 shrink-0" aria-hidden="true" />
+            {site.email}
+          </a>
+        </li>
+        <li class="flex items-center gap-2">
+          <Icon name="lucide:map-pin" class="size-4" aria-hidden="true" />
+          {site.address.locality}, {site.address.region}
+          {site.address.postalCode}
+        </li>
+        {site.hours.map((h) => (
+          <li class="flex items-center gap-2">
+            <Icon name="lucide:clock" class="size-4" aria-hidden="true" />
+            {formatDays(h.days)} {formatTime(h.open)}–{formatTime(h.close)}
+          </li>
+        ))}
+      </ul>
+      {socials.length > 0 && (
+        <ul class="mt-4 flex gap-3 text-sm">
+          {socials.map(([name, url]) => (
+            <li>
+              <a href={url} rel="noopener" class="capitalize hover:text-white hover:underline">
+                {name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  </Container>
+
+  <div class="border-t border-white/15">
+    <Container class="py-6 text-xs">
+      &copy; {year}
+      {site.legalName}. All rights reserved.
+    </Container>
+  </div>
+</footer>
